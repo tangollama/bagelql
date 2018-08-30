@@ -1,0 +1,24 @@
+{
+  "name": "bagelql",
+  "version": "0.0.1",
+  "description": "\"GraphQL order system implementation for Joey Bagels\"",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tangollama/bagelql.git"
+  },
+  "keywords": [
+    "graphql",
+    "newrelic",
+    "relicast"
+  ],
+  "author": "\"Joel Worrall\"",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/tangollama/bagelql/issues"
+  },
+  "homepage": "https://github.com/tangollama/bagelql#readme"
+}
