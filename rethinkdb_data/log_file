@@ -1,0 +1,35 @@
+2018-08-31T17:08:09.821249000 0.028394s notice: Recursively removing directory /Users/jworrall/workspace/joeybagels/bagelql/rethinkdb_data/tmp
+2018-08-31T17:08:09.823431000 0.030579s notice: Initializing directory /Users/jworrall/workspace/joeybagels/bagelql/rethinkdb_data
+2018-08-31T17:08:09.823519000 0.030664s info: Creating a default database for your convenience. (This is because you ran 'rethinkdb' without 'create', 'serve', or '--join', and the directory '/Users/jworrall/workspace/joeybagels/bagelql/rethinkdb_data' did not already exist or is empty.)
+2018-08-31T17:08:09.823557000 0.030701s notice: Running rethinkdb 2.3.6 (CLANG 9.0.0 (clang-900.0.37))...
+2018-08-31T17:08:09.840790000 0.047936s notice: Running on Darwin 17.7.0 x86_64
+2018-08-31T17:08:09.840915000 0.048059s notice: Loading data from directory /Users/jworrall/workspace/joeybagels/bagelql/rethinkdb_data
+2018-08-31T17:08:09.935064000 0.142208s info: Automatically using cache size of 714 MB
+2018-08-31T17:08:09.935635000 0.142779s notice: Listening for intracluster connections on port 29015
+2018-08-31T17:08:09.937612000 0.144757s notice: Listening for client driver connections on port 28015
+2018-08-31T17:08:09.937793000 0.144938s notice: Listening for administrative HTTP connections on port 8080
+2018-08-31T17:08:09.937801000 0.144945s notice: Listening on cluster addresses: 127.0.0.1, ::1
+2018-08-31T17:08:09.937807000 0.144951s notice: Listening on driver addresses: 127.0.0.1, ::1
+2018-08-31T17:08:09.937810000 0.144954s notice: Listening on http addresses: 127.0.0.1, ::1
+2018-08-31T17:08:09.937817000 0.144961s notice: To fully expose RethinkDB on the network, bind to all addresses by running rethinkdb with the `--bind all` command line option.
+2018-08-31T17:08:09.937823000 0.144967s notice: Server ready, "C02W450AHTD8_vky" 7938d04c-9ec3-4f7a-a546-cfa08f4082f7
+2018-08-31T17:08:14.961607000 5.168756s notice: Server got SIGINT from pid 2087, uid 501; shutting down...
+2018-08-31T17:08:14.961824000 5.168973s notice: Shutting down client connections...
+2018-08-31T17:08:14.961945000 5.169094s notice: All client connections closed.
+2018-08-31T17:08:14.961953000 5.169102s notice: Shutting down storage engine... (This may take a while if you had a lot of unflushed data in the writeback cache.)
+2018-08-31T17:08:14.962501000 5.169651s notice: Storage engine shut down.
+2018-08-31T17:08:18.361412000 0.009940s notice: Running rethinkdb 2.3.6 (CLANG 9.0.0 (clang-900.0.37))...
+2018-08-31T17:08:18.366225000 0.014749s notice: Running on Darwin 17.7.0 x86_64
+2018-08-31T17:08:18.366276000 0.014799s notice: Loading data from directory /Users/jworrall/workspace/joeybagels/bagelql/rethinkdb_data
+2018-08-31T17:08:18.393893000 0.042416s info: Automatically using cache size of 637 MB
+2018-08-31T17:08:18.394460000 0.042983s notice: Listening for intracluster connections on port 29015
+2018-08-31T17:08:18.396393000 0.044916s notice: Listening for client driver connections on port 28015
+2018-08-31T17:08:18.396597000 0.045120s notice: Listening for administrative HTTP connections on port 8080
+2018-08-31T17:08:18.396599000 0.045122s notice: Listening on cluster addresses: 127.0.0.1, ::1
+2018-08-31T17:08:18.396604000 0.045127s notice: Listening on driver addresses: 127.0.0.1, ::1
+2018-08-31T17:08:18.396607000 0.045130s notice: Listening on http addresses: 127.0.0.1, ::1
+2018-08-31T17:08:18.396613000 0.045136s notice: To fully expose RethinkDB on the network, bind to all addresses by running rethinkdb with the `--bind all` command line option.
+2018-08-31T17:08:18.396619000 0.045142s notice: Server ready, "C02W450AHTD8_vky" 7938d04c-9ec3-4f7a-a546-cfa08f4082f7
+2018-09-01T00:03:15.639735000 1278.356171s info: Table ab278831-c265-403e-b436-0b0059967a27: Starting a new Raft election for term 1.
+2018-09-01T00:03:15.640233000 1278.356666s info: Table ab278831-c265-403e-b436-0b0059967a27: Added replica on this server.
+2018-09-01T00:03:15.649834000 1278.366268s info: Table ab278831-c265-403e-b436-0b0059967a27: This server is Raft leader for term 1. Latest log index is 0.
