@@ -22,10 +22,14 @@
   },
   "homepage": "https://github.com/tangollama/bagelql#readme",
   "dependencies": {
+    "cache-service-node-cache": "^2.0.0",
     "express": "^4.16.3",
     "express-graphql": "^0.6.12",
     "graphql": "^14.0.0",
     "graphql-iso-date": "^3.5.0",
+    "newrelic": "^4.8.1",
+    "request": "^2.88.0",
+    "request-promise": "^4.2.2",
     "rethinkdb": "^2.3.3",
     "uuid": "^3.3.2",
     "uuidv4": "^1.0.1"

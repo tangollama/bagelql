@@ -2,6 +2,7 @@ var express = require('express');
 var express_graphql = require('express-graphql');
 var { buildSchema } = require('graphql');
 var uuid = require('uuidv4');
+var { retrieveTrends } = require('./custom_instrumentation');
 var { loadOrder, queryOrders, upsertOrder, initDb } = require('./dbutil');
 
 // GraphQL schema
@@ -13,7 +14,8 @@ var schema = buildSchema(`
             location: String 
             start: Date 
             end: Date
-        ): [Order]        
+        ): [Order]
+        trends: Trends  
     }
     type Mutation {
         addOrder(input: OrderInput!): Order
@@ -55,21 +57,28 @@ var schema = buildSchema(`
         anonymous_id: String
         external_id: String
         fields: [String]
-
+    }
+    type Trends {
+        locations: [TrendData]
+        types: [TrendData]
+    }
+    type TrendData {
+        label: String
+        value: Int
     }
 `);
-var getOrder = function(args) { 
+var getOrder = (args) => { 
     var id = args.id;
     return loadOrder(id);
 }
-var getOrders = function(args) {
+var getOrders = (args) => {
     if (args.location) {
         return queryOrders(args.location)
     } else {
         return queryOrders()
     } 
 }
-var createOrder = function(args) {
+var createOrder = (args) => {
     var orderInput = args.input
     if (!orderInput.id)
         orderInput.id = uuid();
@@ -78,10 +87,14 @@ var createOrder = function(args) {
     upsertOrder(orderInput)
     
 }
+var getTrends = () => {
+    return retrieveTrends();
+}
 var root = {
     order: getOrder,
     orders: getOrders,
-    addOrder: createOrder
+    addOrder: createOrder,
+    trends: getTrends
 };
 // Create an express server and a GraphQL endpoint
 try {

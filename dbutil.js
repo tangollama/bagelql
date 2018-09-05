@@ -1,4 +1,6 @@
 var r = require('rethinkdb');
+var { instrumentOrderItems } = require('./custom_instrumentation');
+
 const _dbConfig = {
     host: 'localhost', port: 28015, db: 'test'
 };
@@ -21,7 +23,7 @@ const loadOrder = (id) => {
         })
     });
 }
-const queryOrders = function() {
+const queryOrders = (location) => {
     return new Promise((resolve, reject) => {
         r.connect( _dbConfig, function(err, conn) {
             if (err) reject(err);
@@ -42,7 +44,7 @@ const queryOrders = function() {
         });    
     });
 }
-const upsertOrder = function(order) {
+const upsertOrder = (order) => {
     return new Promise((resolve, reject) => {
         r.connect( _dbConfig, function(err, conn) {
             if (err) reject(err);
@@ -52,6 +54,7 @@ const upsertOrder = function(order) {
                     if (err) {
                         reject(err);
                     } else {
+                        instrumentOrderItems(order);
                         resolve(result);
                     }
                 }).finally(() => {
