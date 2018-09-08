@@ -1,5 +1,7 @@
-rethinkdb_data/*.*
+rethinkdb_data/*
 node_modules
 .DS_Store
+rethinkdb_data/.DS_Store
+.env
 newrelic.js
 newrelic_agent.log

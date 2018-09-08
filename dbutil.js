@@ -4,6 +4,16 @@ var { instrumentOrderItems } = require('./custom_instrumentation');
 const _dbConfig = {
     host: 'localhost', port: 28015, db: 'test'
 };
+class Order {
+    constructor(id, {request_date, location, items, customer, source}) {
+        this.id = id;
+        this.request_date = request_date;
+        this.location = location;
+        this.source = source;
+        this.customer = customer; //object
+        this.items = items; //array of objects
+    }
+}
 const loadOrder = (id) => {
     return new Promise((resolve, reject) => {
         r.connect(_dbConfig, (err, conn) => {
@@ -15,7 +25,8 @@ const loadOrder = (id) => {
                         reject(err2);
                     } else {
                         //console.log("load Order results ", result)
-                        resolve(result);
+                        const order = new Order(id, result);
+                        resolve(order);
                     }
                 }).finally(() => {
                     conn.close();
@@ -44,18 +55,20 @@ const queryOrders = (location) => {
         });    
     });
 }
-const upsertOrder = (order) => {
+const upsertOrder = (input) => {
     return new Promise((resolve, reject) => {
         r.connect( _dbConfig, function(err, conn) {
             if (err) reject(err);
             r.table('orders')
-                .insert(order)
+                .insert(input)
                 .run(conn, function(err, result) {
+                    console.dir(result);
                     if (err) {
                         reject(err);
                     } else {
+                        const order = new Order(input.id, input);
                         instrumentOrderItems(order);
-                        resolve(result);
+                        resolve(order);
                     }
                 }).finally(() => {
                     conn.close(function(err) { if (err) throw err; });
@@ -63,27 +76,30 @@ const upsertOrder = (order) => {
         });    
     });
 }
-const initDb = function() {    
-    r.connect( _dbConfig, function(err, conn) {
-        if (err) {
-            console.error(err);
-            return;
-        }
-        r.db('test')
-            .tableCreate('orders')
-            .run(conn, function(err, result) {
+const initDb = function() {
+    return new Promise((resolve, reject) => {
+        r.connect( _dbConfig, function(err, conn) {
             if (err) {
-                if (err.message.indexOf('already exists') > -1) {
-                    console.log(err.message);
-                } else {
-                    throw err;
-                }                
-            } else {
-                console.log(JSON.stringify(result, null, 2));
-            }            
-        }).finally(() => {
-            conn.close(function(err) { if (err) throw err; });
-        });    
+                console.error(err);
+                return;
+            }
+            r.db('test')
+                .tableCreate('orders')
+                .run(conn, function(err, result) {
+                    if (err) {
+                        if (err.message.indexOf('already exists') == -1) {
+                            console.log(`Error Message: ${err.message}`, err);
+                            resolve(result);
+                        } else {
+                            reject(err);
+                        }                
+                    } else {
+                        resolve(result);
+                    }            
+            }).finally(() => {
+                conn.close(function(err) { if (err) throw err; });
+            });    
+        });
     });
 }
-module.exports = { loadOrder, queryOrders, upsertOrder, initDb };
+module.exports = { loadOrder, queryOrders, upsertOrder, initDb, Order };

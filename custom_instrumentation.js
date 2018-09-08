@@ -1,19 +1,81 @@
 var newrelic = require('newrelic');
-var csNodeCache = require('cache-service-node-cache');
-var rp = require('request-promise');
- 
-var nodeCache = new csNodeCache({defaultExpiration: 60});
+var env = require('node-env-file');
+var cache = require('memory-cache');
+var { GraphQLClient } = require('graphql-request');
 
-_init();
-
-const _init = () => {
-    if (!nodeCache.get("location_trends")) {
-        console.log("initiating cache for location_trends");
-
-    } 
-    if (!nodeCache.get("type_trends")) {
-        console.log("initiating cache for type_trends");
+//load environment variables
+env(__dirname + '/.env');
+const apiKey = process.env.NEWRELIC_API_KEY;
+const account_id = process.env.NEWRELIC_ACCOUNT_ID;
+const nerdGraphEndpoint = process.env.NEWRELIC_GRAPHQL_ENDPOINT;
+const query = `{
+        actor { 
+            account(id: ${account_id}) { 
+                bagelLocations: nrql(query: "SELECT sum(quantity) FROM BagelOrderItem SINCE 7 days AGO facet location limit 1000") {
+                    results
+                }
+                bagelTypes: nrql(query: "SELECT sum(quantity) FROM BagelOrderItem SINCE 7 days AGO facet type limit 1000") {
+                    results
+                }
+            } 
+        } 
+}`;
+class Trends {
+    constructor(locations, types) {
+        this.locations = locations;
+        this.types = types;
+    }    
+} 
+class TrendData {
+    constructor(label, value) {
+        this.label = label;
+        this.value = value;
     }
+}
+/**
+  * Returns an object complying with the GraphQL spec
+    type Trends {
+        locations: [TrendData]
+        types: [TrendData]
+    }
+    type TrendData {
+        label: String
+        value: Int
+    }
+  */
+const getCachedTrends = () => {
+    //console.log(`Return location_trends`, cache.get("location_trends"))
+    //console.log(`Return type_trends`, cache.get("type_trends"))
+    return new Trends(cache.get("location_trends"), cache.get("type_trends"));    
+}
+const _init = () => {
+    //console.log("Environment", process.env);
+    console.log("initiating cache");
+    refreshCache();    
+}
+const refreshCache = () => {
+    console.log("Entering refreshCache");
+    const client = new GraphQLClient(nerdGraphEndpoint, { headers: { 'Api-Key': apiKey } })
+    client.request(query)
+        .then(data => {
+            let bagelTypes = [];
+            data.actor.account.bagelTypes.results.forEach(el => {
+                bagelTypes.push(new TrendData(el.type, Number.parseInt(el["sum.quantity"])));
+            })
+            //bagelTypes.sort();
+            cache.put("type_trends", bagelTypes);
+            //console.log(`Set type_trends`, bagelTypes);
+            let bagelLocations = [];
+            data.actor.account.bagelLocations.results.forEach(el => {
+                bagelLocations.push(new TrendData(el.location, Number.parseInt(el["sum.quantity"])));
+            })
+            //bagelLocations.sort();
+            cache.put("location_trends", bagelLocations);
+            console.dir([cache.get("type_trends"), cache.get("location_trends")]);
+        })
+        .catch(e => { console.log(`Catching the following error ${e.message}`, e)});
+    //redo it in 30 seconds
+    setTimeout(() => {refreshCache()}, 30000);    
 }
 const instrumentOrderItems = (order) => {
     order.items.forEach(item => {
@@ -39,21 +101,6 @@ const instrumentOrderItems = (order) => {
         }
     });    
 }
-/**
- * Returns an object complying with the GraphQL spec
- * type Trends {
-        locations: [TrendData]
-        types: [TrendData]
-    }
-    type TrendData {
-        label: String
-        value: Int
-    }
- */
-const retrieveTrends = () => {
-    return {
-        locations: nodeCache.get("location_trends"),
-        types: nodeCache.get("type_trends")
-    }
-}
-module.exports = { instrumentOrderItems, retrieveTrends };
+_init();
+
+module.exports = { instrumentOrderItems, getCachedTrends, Trends };
