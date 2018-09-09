@@ -71,7 +71,7 @@ const refreshCache = () => {
             })
             //bagelLocations.sort();
             cache.put("location_trends", bagelLocations);
-            console.dir([cache.get("type_trends"), cache.get("location_trends")]);
+            //console.dir([cache.get("type_trends"), cache.get("location_trends")]);
         })
         .catch(e => { console.log(`Catching the following error ${e.message}`, e)});
     //redo it in 30 seconds

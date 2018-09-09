@@ -62,7 +62,7 @@ const upsertOrder = (input) => {
             r.table('orders')
                 .insert(input)
                 .run(conn, function(err, result) {
-                    console.dir(result);
+                    //console.dir(result);
                     if (err) {
                         reject(err);
                     } else {
@@ -81,7 +81,7 @@ const initDb = function() {
         r.connect( _dbConfig, function(err, conn) {
             if (err) {
                 console.error(err);
-                return;
+                reject(err);
             }
             r.db('test')
                 .tableCreate('orders')
