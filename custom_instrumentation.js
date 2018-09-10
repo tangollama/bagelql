@@ -75,7 +75,7 @@ const refreshCache = () => {
         })
         .catch(e => { console.log(`Catching the following error ${e.message}`, e)});
     //redo it in 30 seconds
-    setTimeout(() => {refreshCache()}, 30000);    
+    setTimeout(() => {refreshCache()}, 10000);    
 }
 const instrumentOrderItems = (order) => {
     order.items.forEach(item => {
