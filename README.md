@@ -10,7 +10,7 @@ This example exists to demonstate how to implement [New Relic custom instrumenta
 4. If forked, clone your forked repository `git clone https://github.com/<YOUR USERNAME>/bagelql.git`
 5. Change directory `cd bagelql`
 6. Install packages `npm install`
-7. Per the Install instructions for the New Relic Node.js agent](https://docs.newrelic.com/docs/agents/nodejs-agent/installation-configuration/install-nodejs-agent), copy the newrelic.js file into the root directory `cp node_modules/newrelic/newrelic.js .`
+7. Per the Install instructions for the [New Relic Node.js agent](https://docs.newrelic.com/docs/agents/nodejs-agent/installation-configuration/install-nodejs-agent), copy the newrelic.js file into the root directory `cp node_modules/newrelic/newrelic.js .`
 8. Update the newrelic.js in the project root directory with your license_key and app_name
 9. Copy the .env.example file to .env `cp .env.example .env`
 10. Update the values for the NEWRELIC_API_KEY and NEWRELIC_ACCOUNT_ID in the newly copied .env. Save the file.
