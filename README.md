@@ -6,7 +6,13 @@ This example exists to demonstate how to implement [New Relic custom instrumenta
 # Installation
 1. [Install](https://rethinkdb.com/docs/install/) and [start]() RethinkDB.
 2. Ensure you have [git](https://git-scm.com/downloads) and [node](https://nodejs.org/en/download/) installed.
-3. Clone this repo `git clone https://github.com/tangollama/bagelql.git`
-4. Change directory `cd bagelql`
-5. Install packages `npm install`
-6. Run `node server.js` and navigate to http://localhost:4000/graphql
+3. [Fork](https://help.github.com/articles/fork-a-repo/) this repository on GitHub.
+4. Clone your forked repository `git clone https://github.com/<YOUR USERNAME>/bagelql.git`
+5. Change directory `cd bagelql`
+6. Install packages `npm install`
+7. Per the Install instructions for the New Relic Node.js agent](https://docs.newrelic.com/docs/agents/nodejs-agent/installation-configuration/install-nodejs-agent), copy the newrelic.js file into the root directory `cp node_modules/newrelic/newrelic.js .`
+8. Update the newrelic.js in the project root directory with your license_key and app_name
+9. Copy the .env.example file to .env `cp .env.example .env`
+10. Update the values for the NEWRELIC_API_KEY and NEWRELIC_ACCOUNT_ID in the newly copied .env. Save the file.
+11. Start the server `npm start`
+12. Navigate to http://location:4000/graphql
