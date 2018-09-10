@@ -4,8 +4,8 @@ GraphQL order system implementation for fictional Joey Bagels deli chain. The pr
 This example exists to demonstate how to implement [New Relic custom instrumentation](https://docs.newrelic.com/docs/agents/nodejs-agent/installation-configuration/install-nodejs-agent) of a Node.js application. 
 
 # Installation
-1. [Install](https://rethinkdb.com/docs/install/) and [start]() RethinkDB.
-2. Ensure you have [git](https://git-scm.com/downloads) and [node](https://nodejs.org/en/download/) installed.
+1. Ensure you have [git](https://git-scm.com/downloads) and [node](https://nodejs.org/en/download/) installed.
+2. [Install](https://rethinkdb.com/docs/install/) and [start]() RethinkDB.
 3. [Fork](https://help.github.com/articles/fork-a-repo/) or clone `git clone https://github.com/tangollama/bagelql.git` this repository.
 4. If forked, clone your forked repository `git clone https://github.com/<YOUR USERNAME>/bagelql.git`
 5. Change directory `cd bagelql`
