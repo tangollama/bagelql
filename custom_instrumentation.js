@@ -3,6 +3,11 @@ var env = require('node-env-file');
 var cache = require('memory-cache');
 var { GraphQLClient } = require('graphql-request');
 
+/**
+ * This file contains custom instrumentation that interacts with New Relic in two ways:
+ * 1. Building a storing a custom entity in New Relic that represents a Bagel Order (for the purposes of trending and analysis)
+ * 2. Building out a trending data query using New Relic's GraphQL API for the purposes of surfacing that data in the bagelql API
+ */
 //load environment variables
 env(__dirname + '/.env');
 const apiKey = process.env.NEWRELIC_API_KEY;
