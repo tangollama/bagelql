@@ -1,7 +1,9 @@
+var newrelic = require('newrelic');
 var express = require('express');
 var express_graphql = require('express-graphql');
 var { buildSchema } = require('graphql');
 var uuid = require('uuidv4');
+var { getCachedTrends } = require('./custom_instrumentation');
 var { loadOrder, queryOrders, upsertOrder, initDb } = require('./dbutil');
 
 // GraphQL schema
@@ -13,7 +15,8 @@ var schema = buildSchema(`
             location: String 
             start: Date 
             end: Date
-        ): [Order]        
+        ): [Order]
+        trends: Trends  
     }
     type Mutation {
         addOrder(input: OrderInput!): Order
@@ -41,11 +44,11 @@ var schema = buildSchema(`
         id: String
         request_date: Date
         location: String
-        items: [Item]
+        items: [OrderItem]
         customer: Customer
         source: String
     }
-    type Item {
+    type OrderItem {
         label: String
         type: String
         quantity: Int
@@ -55,44 +58,62 @@ var schema = buildSchema(`
         anonymous_id: String
         external_id: String
         fields: [String]
-
+    }
+    type Trends {
+        locations: [TrendData]
+        types: [TrendData]
+    }
+    type TrendData {
+        label: String
+        value: Int
     }
 `);
-var getOrder = function(args) { 
+var getOrder = (args) => { 
     var id = args.id;
     return loadOrder(id);
 }
-var getOrders = function(args) {
+var getOrders = (args) => {
     if (args.location) {
         return queryOrders(args.location)
     } else {
         return queryOrders()
     } 
 }
-var createOrder = function(args) {
+var createOrder = (args) => {
     var orderInput = args.input
     if (!orderInput.id)
         orderInput.id = uuid();
     if (!orderInput.request_date)
         orderInput.request_date = new Date()
-    upsertOrder(orderInput)
+    return upsertOrder(orderInput)
     
 }
+var getTrends = () => {
+    return getCachedTrends();
+}
 var root = {
+    addOrder: createOrder,
     order: getOrder,
     orders: getOrders,
-    addOrder: createOrder
+    trends: getTrends
 };
 // Create an express server and a GraphQL endpoint
-try {
-    initDb();
-} catch (error) {
-    //ignore
-}
 var app = express();
 app.use('/graphql', express_graphql({
     schema: schema,
     rootValue: root,
-    graphiql: true
+    graphiql: true,
+    formatError: error => ({
+        message: error.message,
+        locations: error.locations,
+        stack: error.stack ? error.stack.split('\n') : [],
+        path: error.path
+        })
 }));
-app.listen(4000, () => console.log('Express GraphQL Server Now Running On localhost:4000/graphql'));
+app.listen(4000, () => {
+    initDb().then(() => {
+        console.log('Express GraphQL Server Now Running On localhost:4000/graphql')
+    }).catch((err) => {
+        console.log("Error during startup.")
+    });
+});
