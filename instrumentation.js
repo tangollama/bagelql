@@ -9,7 +9,7 @@ var { GraphQLClient } = require('graphql-request');
  * 2. Building out a trending data query using New Relic's GraphQL API for the purposes of surfacing that data in the bagelql API
  */
 //load environment variables
-env(__dirname + '/../.env');
+env(__dirname + '/.env');
 const apiKey = process.env.NEWRELIC_API_KEY;
 const account_id = process.env.NEWRELIC_ACCOUNT_ID;
 const nerdGraphEndpoint = process.env.NEWRELIC_GRAPHQL_ENDPOINT;
@@ -35,28 +35,6 @@ class TrendData {
     constructor(label, value) {
         this.label = label;
         this.value = value;
-    }
-}
-class OrderItem {
-    constructor(item, order) {
-        this.item = item;
-        this.order = order;
-    }
-    flattenOrder() {
-        let flattenedOrder = {
-            orderId: this.order.id, 
-            location: this.order.location,
-            request_date: this.order.request_date.getTime(),
-            source: this.order.source                                    
-        }
-        if (this.order.customer.anonymous_id) {
-            flattenedOrder.customer_anonymous_id = this.order.customer.anonymous_id;
-        }
-        if (order.customer.external_id) {
-            flattenedOrder.customer_external_id = this.order.customer.external_id;
-        }
-        const bagelOrderItem = Object.assign(flattenedOrder, item);
-        return bagelOrderItem;
     }
 }
 /**
@@ -103,7 +81,19 @@ const instrumentOrderItems = (order) => {
     order.items.forEach(item => {
         try {
             //flatten the bagel order item into one level            
-            const bagelOrderItem = (new OrderItem(item, order)).flattenOrder();
+            let flattenedOrder = {
+                orderId: order.id, 
+                location: order.location,
+                request_date: order.request_date.getTime(),
+                source: order.source                                    
+            }
+            if (order.customer.anonymous_id) {
+                flattenedOrder.customer_anonymous_id = order.customer.anonymous_id;
+            }
+            if (order.customer.external_id) {
+                flattenedOrder.customer_external_id = order.customer.external_id;
+            }
+            const bagelOrderItem = Object.assign(flattenedOrder, item);
             //record it in new relic for real-time analysis
             newrelic.recordCustomEvent("BagelOrderItem", bagelOrderItem)
         } catch (err) {
