@@ -13,7 +13,7 @@ This example exists to demonstate how to implement [New Relic custom instrumenta
 7. Per the Install instructions for the [New Relic Node.js agent](https://docs.newrelic.com/docs/agents/nodejs-agent/installation-configuration/install-nodejs-agent), copy the newrelic.js file into the root directory `cp node_modules/newrelic/newrelic.js .`
 8. Update the newrelic.js in the project root directory with your license_key and app_name
 9. Copy the .env.example file to .env `cp .env.example .env`
-10. Update the values for the NEWRELIC_API_KEY and NEWRELIC_ACCOUNT_ID in the newly copied .env. Save the file.
+10. Update the values for the [NEWRELIC_API_KEY](https://docs.newrelic.com/docs/apis/getting-started/intro-apis/understand-new-relic-api-keys) and NEWRELIC_ACCOUNT_ID in the newly copied .env. Save the file.
 11. Uncomment the following lines in server.js ` //var { getCachedTrends } = require('./instrumentation'); ` and ` //return getCachedTrends(); `
 12. Uncomment the following lines in dbutil.js ` //var { instrumentOrderItems } = require('./instrumentation'); ` and ` //instrumentOrderItems(order); `
 13. Start the server `npm start`
