@@ -3,7 +3,7 @@ var express = require('express');
 var express_graphql = require('express-graphql');
 var { buildSchema } = require('graphql');
 var uuid = require('uuidv4');
-var { getCachedTrends } = require('./custom_instrumentation');
+var { getCachedTrends } = require('./custom/instrumentation');
 var { loadOrder, queryOrders, upsertOrder, initDb } = require('./dbutil');
 
 // GraphQL schema

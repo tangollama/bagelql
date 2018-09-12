@@ -1,5 +1,5 @@
 var r = require('rethinkdb');
-var { instrumentOrderItems } = require('./custom_instrumentation');
+var { instrumentOrderItems } = require('./custom/instrumentation');
 
 const _dbConfig = {
     host: 'localhost', port: 28015, db: 'test'
