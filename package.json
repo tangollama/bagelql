@@ -4,7 +4,7 @@
   "description": "GraphQL order system implementation for Joey Bagels",
   "main": "server.js",
   "scripts": {
-    "run": "node server.js",
+    "run": "node server.js"
   },
   "repository": {
     "type": "git",
