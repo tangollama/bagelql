@@ -1,0 +1,18 @@
+version: '2'
+services:
+  db:
+    image: rethinkdb:latest
+    ports:  
+      - "38080:8080"
+      - "28015:28015"
+      - "39015:29015"
+  bagelql:
+    image: node:latest    
+    volumes:
+      - .:/usr/src/app
+    working_dir: /usr/src/app
+    command: npm start
+    ports:
+      - "4000:4000"
+    depends_on:
+      - db
