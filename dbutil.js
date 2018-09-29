@@ -1,8 +1,8 @@
 var r = require('rethinkdb');
-//var { instrumentOrderItems } = require('./instrumentation');
+var { instrumentOrderItems } = require('./instrumentation');
 
 const _dbConfig = {
-    host: 'localhost', port: 28015, db: 'test'
+    host: 'db', port: 28015, db: 'test'
 };
 class Order {
     constructor(id, {request_date, location, items, customer, source}) {
@@ -67,7 +67,7 @@ const upsertOrder = (input) => {
                         reject(err);
                     } else {
                         const order = new Order(input.id, input);
-                        //instrumentOrderItems(order);
+                        instrumentOrderItems(order);
                         resolve(order);
                     }
                 }).finally(() => {
