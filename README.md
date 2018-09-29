@@ -26,4 +26,4 @@ This example exists to demonstate how to implement [New Relic custom instrumenta
 2. Run ```docker pull rethinkdb```
 3. If you haven't already, run ```npm install```
 4. Run ```docker-compose up``` 
-5. Access the service at http://localhost:4000
+5. Access the service at http://localhost:4000/graphql
